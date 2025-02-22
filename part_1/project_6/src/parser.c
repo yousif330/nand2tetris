@@ -65,7 +65,7 @@ instruction_t check_instruction_type(char buffer[]) {
 // copy a string until the specified end character
 void copy_string(char *dest, char *src, char end) {
     int i;
-    for (i = 0; src[i] != end && src[i] != '\0'; i++) {
+    for (i = 0; src[i] != end && src[i] != '\0' && src[i] != '\n'; i++) {
         dest[i] = src[i];
     }
     dest[i] = '\0';
@@ -126,11 +126,20 @@ char *jump(char buffer[]) {
 char *comp(char buffer[]) {
     char *comp_buffer = (char *)malloc(sizeof(char) * COMP_BUFFER_SIZE);
 
-    for (int i = 0; buffer[i] != '\0'; i++) {
-        if (buffer[i] == '=') {
-            copy_string(comp_buffer, buffer + i + 1, ';');
+    if (strstr(buffer, "=") != NULL) {
+        for (int i = 0; buffer[i] != '\0'; i++) {
+            if (buffer[i] == '=') {
+                copy_string(comp_buffer, buffer + i + 1, ';');
+                break;
+            }
+        }
+    } else {
+        for (int i = 0; buffer[i] != '\0'; i++) {
+            if (buffer[i] != ' ' || buffer[i] != '\t')
+                copy_string(comp_buffer, buffer + i, ';');
             break;
         }
     }
+
     return comp_buffer;
 }

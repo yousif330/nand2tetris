@@ -1,0 +1,3 @@
+/home/yousif/projects/nand2teris/part_1/project_6/build/CMakeFiles/HackAssembler.dir
+/home/yousif/projects/nand2teris/part_1/project_6/build/CMakeFiles/edit_cache.dir
+/home/yousif/projects/nand2teris/part_1/project_6/build/CMakeFiles/rebuild_cache.dir
