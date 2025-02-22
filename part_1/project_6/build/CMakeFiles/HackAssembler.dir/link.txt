@@ -1,1 +1,0 @@
-/usr/bin/cc -g CMakeFiles/HackAssembler.dir/src/main.c.o CMakeFiles/HackAssembler.dir/src/parser.c.o CMakeFiles/HackAssembler.dir/src/code.c.o CMakeFiles/HackAssembler.dir/src/hashtable.c.o -o HackAssembler 
