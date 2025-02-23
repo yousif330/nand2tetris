@@ -1,6 +1,6 @@
 #include "../include/parser.h"
 #include "../include/code.h"
-#include "../include/hashtable.h"
+#include "../include/symboltable.h"
 #include <string.h>
 #include <stdlib.h>
 

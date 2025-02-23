@@ -1,7 +1,7 @@
 #ifndef _CODE_
 #define _CODE_
 
-#include "hashtable.h"
+#include "symboltable.h"
 
 // convert a decimal string to binary
 char *decimal_to_binary(char buffer[]);

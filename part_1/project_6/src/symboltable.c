@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../include/hashtable.h"
+#include "../include/symboltable.h"
 
 // function for creating a hash table and initlizing it with null
 s_hash_table create_hash_table(int size) {
