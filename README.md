@@ -1,4 +1,4 @@
-# nand2teris
+# nand2tetris
 My journy through Nand to Tetris.
 
 I made this repository after finishing the first five projects of the book.
