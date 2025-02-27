@@ -38,4 +38,8 @@ char *jump(char buffer[]);
 // return the comp of type c instructions
 char *comp(char buffer[]);
 
+// open output file
+FILE *open_output_file(char *file_path);
+
+
 #endif

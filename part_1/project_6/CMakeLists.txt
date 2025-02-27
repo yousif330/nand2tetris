@@ -11,6 +11,7 @@ set(SOURCES
     src/parser.c
     src/code.c
     src/hashtable.c
+    src/symboltable.c
 )
 
 add_executable(HackAssembler ${SOURCES})

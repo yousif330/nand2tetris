@@ -1,27 +1,18 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "../include/symboltable.h"
 
-// function for creating a hash table and initlizing it with null
-s_hash_table create_hash_table(int size) {
-    s_element *array = calloc(size, sizeof(s_element));
-    s_hash_table table = {array, size, 0};
-    return table;
-}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-// resize the hash table to double of the old size
-s_hash_table resize_hash_table(s_hash_table table) {
-    s_element *new_array = realloc(table.array, table.size *= 2);
-    table.array = new_array;
+// function for creating a hash table and initlizing it with null
+s_symbol_table create_symbol_table(int size) {
+    s_element *array = calloc(size, sizeof(s_element));
+    s_symbol_table table = {array, 0};
     return table;
 }
 
 // function for inserting in a hash table
-s_hash_table insert(s_hash_table table, char *key, char *value) {
-    if (table.size == table.length) {
-       table = resize_hash_table(table); 
-    }
+s_symbol_table insert(s_symbol_table table, char *key, char *value) {
 
     table.array[table.length].value = value;
     table.array[table.length].key = key;
@@ -31,7 +22,7 @@ s_hash_table insert(s_hash_table table, char *key, char *value) {
 }
 
 // return the elemet holding the key value, return null otherwise
-s_element *search(s_hash_table table, char *key) {
+s_element *search(s_symbol_table table, char *key) {
     for (int i = 0; i < table.length; i++) {
         if (strcmp(table.array[i].key, key) == 0) {
             return &table.array[i];
@@ -40,19 +31,9 @@ s_element *search(s_hash_table table, char *key) {
     return NULL;
 }
 
-// function for freeing all the memory used by the hash table
-void delete_hash_table(s_hash_table table) {
-    for (int i = 0; i < table.length; i++) {
-        free(table.array[i].key);
-        free(table.array[i].value);
-    }
-
-    free(table.array);
-}
-
 // generate the comp instruction set in a hash table
-s_hash_table comp_instruction_set() {
-    s_hash_table table = create_hash_table(50);
+s_symbol_table comp_instruction_set() {
+    s_symbol_table table = create_symbol_table(50);
 
     table = insert(table, "0", "0101010");
     table = insert(table, "1", "0111111");
@@ -69,9 +50,9 @@ s_hash_table comp_instruction_set() {
     table = insert(table, "A-1", "0110010");
     table = insert(table, "D+A", "0000010");
     table = insert(table, "D-A", "0010011");
-    table = insert(table,"A-D", "0000111");
-    table = insert(table,"D&A", "0000000");
-    table = insert(table,"D|A", "0010101");
+    table = insert(table, "A-D", "0000111");
+    table = insert(table, "D&A", "0000000");
+    table = insert(table, "D|A", "0010101");
     table = insert(table, "M", "1110000");
     table = insert(table, "!M", "1110001");
     table = insert(table, "-M", "1110011");
@@ -79,16 +60,16 @@ s_hash_table comp_instruction_set() {
     table = insert(table, "M-1", "1110010");
     table = insert(table, "D+M", "1000010");
     table = insert(table, "D-M", "1010011");
-    table = insert(table,"M-D", "1000111");
-    table = insert(table,"D&M", "1000000");
-    table = insert(table,"D|M", "1010101");
+    table = insert(table, "M-D", "1000111");
+    table = insert(table, "D&M", "1000000");
+    table = insert(table, "D|M", "1010101");
 
     return table;
 }
 
 // generate the jump instuction set in a hash table
-s_hash_table jump_instruction_set() {
-    s_hash_table table= create_hash_table(9);
+s_symbol_table jump_instruction_set() {
+    s_symbol_table table = create_symbol_table(9);
 
     table = insert(table, "", "000");
     table = insert(table, "JGT", "001");
@@ -103,8 +84,8 @@ s_hash_table jump_instruction_set() {
 }
 
 // generate the dest instruction set in a hash table
-s_hash_table dest_instruction_set() {
-    s_hash_table table= create_hash_table(9);
+s_symbol_table dest_instruction_set() {
+    s_symbol_table table = create_symbol_table(9);
 
     table = insert(table, "", "000");
     table = insert(table, "M", "001");
@@ -118,6 +99,26 @@ s_hash_table dest_instruction_set() {
     return table;
 }
 
+// build all predefined tables
+s_predefined_symbols build_symbol_tables() {
+    s_predefined_symbols symbol_tables;
+
+    symbol_tables.dest_table = dest_instruction_set();
+    symbol_tables.comp_table = comp_instruction_set();
+    symbol_tables.jump_table = jump_instruction_set();
+
+    return symbol_tables;
+}
+
+// free the predefined symbol tables
+void delete_symbol_tables(s_predefined_symbols symbol_tables) {
+    free(symbol_tables.dest_table.array);
+    free(symbol_tables.comp_table.array);
+    free(symbol_tables.jump_table.array);
+}
+
+
+  
 
 
 

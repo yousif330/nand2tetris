@@ -143,3 +143,57 @@ char *comp(char buffer[]) {
 
     return comp_buffer;
 }
+
+// copy a string until a pattern
+void copy_until_pattern(char *dest, char *src, char *pattern) {
+    char *pointer_to_pattern = strstr(src, pattern);
+
+    if (pointer_to_pattern == NULL) {
+        return;
+    }
+
+    int len = strlen(src) - strlen(pointer_to_pattern);
+    strncpy(dest, src, len);
+    dest[len] = '\0';
+}
+
+
+// generate the output file name from the input file name
+char *output_file_name(char *input_file_name) {
+    char *output_file_name = malloc(sizeof(char) * strlen(input_file_name) + 2);
+
+
+    copy_until_pattern(output_file_name, input_file_name, ".asm");
+    strcat(output_file_name, ".hack");
+    return output_file_name;
+}
+
+// open output file
+FILE *open_output_file(char *file_path) {
+    char *str = output_file_name(file_path);
+    FILE *output_file = fopen(str, "w");
+    free(str);
+
+    return output_file;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
