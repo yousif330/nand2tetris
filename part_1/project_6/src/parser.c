@@ -95,7 +95,7 @@ char *dest(char buffer[]) {
     }
 
     for (int i = 0; buffer[i] != '\0'; i++) {
-        if (buffer[i] != ' ' || buffer[i] != '\t') {
+        if (buffer[i] != ' ' && buffer[i] != '\t') {
             copy_string(dest_buffer, buffer + i, '=');
             break;
         }
@@ -135,9 +135,10 @@ char *comp(char buffer[]) {
         }
     } else {
         for (int i = 0; buffer[i] != '\0'; i++) {
-            if (buffer[i] != ' ' || buffer[i] != '\t')
+            if (buffer[i] != ' ' && buffer[i] != '\t') {
                 copy_string(comp_buffer, buffer + i, ';');
-            break;
+                break;
+            }
         }
     }
 

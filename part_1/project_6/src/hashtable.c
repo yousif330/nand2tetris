@@ -1,9 +1,10 @@
+#include "../include/hashtable.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/hashtable.h"
 
-#define HASH_ARRAY_SIZE 256
+#define HASH_ARRAY_SIZE 1024
 
 // function to create a hash table
 s_table_int *create_table() {
@@ -116,7 +117,7 @@ s_table_int *create_table_with_predefined_symbols() {
     insert_at_table(table, new_string("R13"), 13);
     insert_at_table(table, new_string("R14"), 14);
     insert_at_table(table, new_string("R15"), 15);
-    
+
     insert_at_table(table, new_string("SP"), 0);
     insert_at_table(table, new_string("LCL"), 1);
     insert_at_table(table, new_string("ARG"), 2);
@@ -129,30 +130,13 @@ s_table_int *create_table_with_predefined_symbols() {
 
     return table;
 }
-    
 
+// int main() {
+//     s_table_int *table = create_table_with_predefined_symbols();
 
+//     s_table_int *p = search_table(table, "KBD");
+//     printf("%d\n", p->address);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//     delete_hash_table(table);
+//     return 0;
+// }

@@ -18,6 +18,7 @@ typedef struct file_context {
 s_table_int *preprocess_file(FILE *input_file, char buffer[]);
 void handle_a_instruction(file_context ctx, s_table_int *table);
 void handle_c_instruction(file_context ctx, s_predefined_symbols symbol_tables);
+void cleen_up(file_context ctx, s_table_int *table, s_predefined_symbols symbol_tables);
 
 int main(int argc, char **argv) {
     file_context ctx;
@@ -35,16 +36,15 @@ int main(int argc, char **argv) {
 
     rewind(ctx.input_file);
 
-    int address_count = 16;
-
     // generating the tables that contain the symbol to binary mapping
     s_predefined_symbols symbol_tables = build_symbol_tables();
 
     // fetch line will return null when it reach the end of the file
-    while (fetch_line(buffer, BUFFER_SIZE, ctx.input_file) != NULL) {
+    while (fetch_line(ctx.buffer, BUFFER_SIZE, ctx.input_file) != NULL) {
         // advance to the next line if the current line is blank or comment
         while (is_skippable(buffer)) {
             if (advance(buffer, BUFFER_SIZE, ctx.input_file) == NULL) {
+                cleen_up(ctx, table, symbol_tables);
                 return 0;
             }
         }
@@ -59,14 +59,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    fclose(ctx.output_file);
-    fclose(ctx.input_file);
-
-    // free hash table
-    delete_hash_table(table);
-
-    // free symbolic tables
-    delete_symbol_tables(symbol_tables);
+    cleen_up(ctx, table, symbol_tables);
 
     return 0;
 }
@@ -144,7 +137,7 @@ s_table_int *preprocess_file(FILE *input_file, char buffer[]) {
         // advance to the next line if the current line is blank or comment
         while (is_skippable(buffer)) {
             if (advance(buffer, BUFFER_SIZE, input_file) == NULL) {
-                return 0;
+                return table;
             }
         }
 
@@ -168,6 +161,16 @@ s_table_int *preprocess_file(FILE *input_file, char buffer[]) {
 }
                  
 
+void cleen_up(file_context ctx, s_table_int *table, s_predefined_symbols symbol_tables) {
+    fclose(ctx.output_file);
+    fclose(ctx.input_file);
+
+    // free hash table
+    delete_hash_table(table);
+
+    // free symbolic tables
+    delete_symbol_tables(symbol_tables);
+}
 
 
 

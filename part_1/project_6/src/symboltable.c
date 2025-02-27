@@ -85,16 +85,29 @@ s_symbol_table jump_instruction_set() {
 
 // generate the dest instruction set in a hash table
 s_symbol_table dest_instruction_set() {
-    s_symbol_table table = create_symbol_table(9);
+    s_symbol_table table = create_symbol_table(25);
 
     table = insert(table, "", "000");
     table = insert(table, "M", "001");
     table = insert(table, "D", "010");
+
     table = insert(table, "DM", "011");
+    table = insert(table, "MD", "011");
+
     table = insert(table, "A", "100");
+
     table = insert(table, "AM", "101");
+    table = insert(table, "MA", "101");
+
     table = insert(table, "AD", "110");
+    table = insert(table, "DA", "110");
+
     table = insert(table, "ADM", "111");
+    table = insert(table, "AMD", "111");
+    table = insert(table, "DAM", "111");
+    table = insert(table, "DMA", "111");
+    table = insert(table, "MAD", "111");
+    table = insert(table, "MDA", "111");
 
     return table;
 }
