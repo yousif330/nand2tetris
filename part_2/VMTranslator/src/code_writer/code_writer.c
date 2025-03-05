@@ -51,9 +51,27 @@ void write_bi_operation(char op, FILE *out) {
     fprintf(out, "@SP\nAM=M-1\nD=M\n");
     fprintf(out, "@SP\nAM=M-1\n");
 
-    fprintf(out, "D=D%cM\n", op);
+    if (op == '+') {
+        fprintf(out, "D=D+M\n");
+    } else {
+        fprintf(out, "D=M%cD\n", op);
+    }
 
     fprintf(out, "@SP\nA=M\nM=D\n@SP\nM=M+1\n");
+}
+
+void write_comparisons_operation(char op, FILE *out) {
+    fprintf(out, "@SP\nAM=M-1\nD=M\n@SP\nAM=M-1\nD=M-D\n@TRUE\n");
+
+    if (op == 'e') {
+        fprintf(out, "D;JEQ\n");
+    } else if (op == 'g') {
+        fprintf(out, "D;JGT\n");
+    } else {
+        fprintf(out, "D;JLT\n");
+    }
+    fprintf(out, "@SP\nA=M\nM=0\n@SP\nM=M+1\n@END\n0;JMP\n");
+    fprintf(out, "(TRUE)\n@SP\nA=M\nM=-1\n@SP\nM=M+1\n(END)\n");
 }
 
 void write_arithmetic(char op, FILE *out) {
@@ -67,6 +85,11 @@ void write_arithmetic(char op, FILE *out) {
         case '&':
         case '|':
             write_bi_operation(op, out);
+            break;
+        case 'e':
+        case 'g':
+        case 'l':
+            write_comparisons_operation(op, out);
             break;
         default:
             exit(EXIT_FAILURE);
