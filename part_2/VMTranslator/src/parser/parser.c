@@ -9,7 +9,8 @@
 #include "../hash_table/hash_table.h"
 #include "string.h"
 
-#define PROGRAM_NAME_SIZE 64
+// the buffer for the program name size
+#define PROGRAM_NAME_SIZE 128
 
 bool is_string_blank(const char *str) {
     while (*str) {
@@ -48,6 +49,7 @@ void remove_comment(char *str) {
     }
 }
 
+// get the command of a line
 void get_command(char *command_buffer, const char *str) {
     while (!isspace(*str)) {
         *command_buffer = *str;
@@ -57,8 +59,8 @@ void get_command(char *command_buffer, const char *str) {
     *command_buffer = '\0';
 }
 
+// get the first argument of the command
 void get_arg1(char *command_buffer, const char *str) {
-    // skip the arg1
     const char *start = strstr(str, " ") + 1;
 
     while (!isspace(*start)) {
@@ -69,6 +71,7 @@ void get_arg1(char *command_buffer, const char *str) {
     *command_buffer = '\0';
 }
 
+// get the second argument of the command
 int get_arg2(const char *str) {
     while (!isdigit(*str)) {
         str++;
@@ -76,6 +79,7 @@ int get_arg2(const char *str) {
     return atoi(str);
 }
 
+// accepts a command and returns its type
 enum command_type get_command_type(struct hash_table *table, const char *str) {
     struct hash_table *result = hash_table_search(table, str);
     if (result == NULL) {
@@ -84,6 +88,7 @@ enum command_type get_command_type(struct hash_table *table, const char *str) {
     return result->type;
 }
 
+// accepts the first argument and determines the memory segment of the command
 char *get_mem_segment(struct hash_table *table, const char *str) {
     struct hash_table *result = hash_table_search(table, str);
     if (result == NULL) {
@@ -92,6 +97,8 @@ char *get_mem_segment(struct hash_table *table, const char *str) {
     return result->value;
 }
 
+// accepts the argument of an arithmetic command and returns the type of
+// operation
 char get_operation(struct hash_table *table, const char *arg1) {
     struct hash_table *result = hash_table_search(table, arg1);
     if (result == NULL) {
@@ -100,6 +107,7 @@ char get_operation(struct hash_table *table, const char *arg1) {
     return *result->value;
 }
 
+// return the input file name without extension, it allocates heap memory
 char *get_program_name(char *str) {
     char *extension = strrchr(str, '.');
     if (extension == NULL) {

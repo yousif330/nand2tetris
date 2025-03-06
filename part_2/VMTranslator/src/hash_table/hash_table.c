@@ -28,6 +28,7 @@ int hash_function(const char *key) {
     return hash % HASH_TABLE_SIZE;
 }
 
+// chain elements in case of collusion
 void hash_table_chain(struct hash_table *elem, char *key, char *value,
                       enum command_type command) {
     struct hash_table *new_elem = malloc(sizeof(struct hash_table));
@@ -56,6 +57,7 @@ void hash_table_insert(struct hash_table *table, char *key, char *value,
     }
 }
 
+// a function to free individual chains
 void hash_table_free_chain(struct hash_table *elem) {
     struct hash_table *prev = NULL;
     while (elem) {
@@ -88,6 +90,7 @@ struct hash_table *hash_table_search(struct hash_table *table,
     return NULL;
 }
 
+// generate hash table with predefined commands and memory segments
 struct hash_table *hash_table_command_set_init() {
     struct hash_table *table = hash_table_init();
 

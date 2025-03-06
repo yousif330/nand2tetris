@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     struct hash_table *table = hash_table_command_set_init();
 
     FILE *input_file = fopen(argv[1], "r");
-    FILE *output_file = fopen("out.asm", "w");
+    FILE *output_file = fopen(strcat(program_name, "asm"), "w");
 
     while (fgets(buffer, BUFFER_SIZE, input_file)) {
         // buffer to store commands
