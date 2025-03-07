@@ -51,7 +51,7 @@ void remove_comment(char *str) {
 
 // get the command of a line
 void get_command(char *command_buffer, const char *str) {
-    while (!isspace(*str)) {
+    while (!isspace(*str) && *str != '\0') {
         *command_buffer = *str;
         str++;
         command_buffer++;
@@ -114,7 +114,7 @@ char *get_program_name(char *str) {
         exit(EXIT_FAILURE);
     }
 
-    size_t length = extension - str + 1;
+    size_t length = extension - str;
     char *new_str = malloc(sizeof(char) * PROGRAM_NAME_SIZE);
     memcpy(new_str, str, length);
     new_str[length] = '\0';
