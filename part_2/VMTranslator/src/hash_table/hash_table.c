@@ -110,7 +110,7 @@ struct hash_table *hash_table_command_set_init() {
     hash_table_insert(table, "argument", "ARG", C_NULL);
     hash_table_insert(table, "this", "THIS", C_NULL);
     hash_table_insert(table, "that", "THAT", C_NULL);
-    hash_table_insert(table, "temp", "TEMP", C_NULL);
+    hash_table_insert(table, "temp", "t", C_NULL);
     hash_table_insert(table, "constant", "C", C_NULL);
     hash_table_insert(table, "static", "S", C_NULL);
 

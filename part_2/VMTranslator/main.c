@@ -64,7 +64,7 @@ struct file_context initialize_file_context(char *path) {
     struct file_context ctx;
     ctx.in = fopen(path, "r");
     ctx.program_name = get_program_name(path);
-    ctx.out = fopen(strcat(ctx.program_name, ".asm"), "r");
+    ctx.out = fopen(strcat(ctx.program_name, ".asm"), "w");
 
     char *name_extension = strrchr(ctx.program_name, '.');
     name_extension[0] = '\0';

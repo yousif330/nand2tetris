@@ -9,7 +9,7 @@
 
 // write the assembly for push operations
 void write_push(char *arg1, int arg2, FILE *out) {
-    fprintf(out, "@%s\nD=A\n@%d\n", arg1, arg2);
+    fprintf(out, "@%s\nD=M\n@%d\n", arg1, arg2);
     fprintf(out, "A=D+A\nD=M\n");
     fprintf(out, "@SP\nA=M\nM=D\n@SP\nM=M+1\n");
 }
@@ -19,6 +19,16 @@ void write_pop(char *arg1, int arg2, FILE *out) {
     fprintf(out, "@SP\nAM=M-1\nD=M\n@R13\nM=D\n");
     fprintf(out, "@%s\nD=M\n@%d\nD=D+A\n@R14\nM=D\n", arg1, arg2);
     fprintf(out, "@R13\nD=M\n@R14\nA=M\nM=D\n");
+}
+
+// write the assembly for temp push
+void write_temp_push(int arg2, FILE *out) {
+    fprintf(out, "@R%d\nD=M\n@SP\nA=M\nM=D\n@SP\nM=M+1\n", arg2 + 5);
+}
+
+// write the assembly for temp pop
+void write_temp_pop(int arg2, FILE *out) {
+    fprintf(out, "@SP\nAM=M-1\nD=M\n@R%d\nM=D\n", arg2 + 5);
 }
 
 // write the assembly for push constants operations
@@ -47,8 +57,16 @@ void write_static_push_pop(char *arg1, int arg2, FILE *out,
 
 void write_push_pop(char *arg1, int arg2, enum command_type command,
                     FILE *out) {
+    // if arg1 is "T" then the command involve temp
+    if (*arg1 == 't') {
+        if (command == C_PUSH) {
+            write_temp_push(arg2, out);
+        } else {
+            write_temp_pop(arg2, out);
+        }
+    }
     // if arg1 is "C" then the command involve constants
-    if (strcmp(arg1, "C") == 0) {
+    else if (*arg1 == 'C') {
         write_constant_push(arg2, out);
     } else if (command == C_PUSH) {
         write_push(arg1, arg2, out);
@@ -73,10 +91,10 @@ void write_bi_operation(char op, FILE *out) {
     fprintf(out, "@SP\nAM=M-1\nD=M\n");
     fprintf(out, "@SP\nAM=M-1\n");
 
-    if (op == '+') {
-        fprintf(out, "D=D+M\n");
+    if (op == '-') {
+        fprintf(out, "D=M-D\n");
     } else {
-        fprintf(out, "D=M%cD\n", op);
+        fprintf(out, "D=D%cM\n", op);
     }
 
     fprintf(out, "@SP\nA=M\nM=D\n@SP\nM=M+1\n");
