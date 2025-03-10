@@ -29,4 +29,6 @@ char get_operation(struct hash_table *table, const char *arg1);
 
 char *get_program_name(char *str);
 
+char *get_file_name(char const *str);
+
 #endif  // PARSER_H

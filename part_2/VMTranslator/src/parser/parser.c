@@ -73,10 +73,13 @@ void get_arg1(char *command_buffer, const char *str) {
 
 // get the second argument of the command
 int get_arg2(const char *str) {
-    while (!isdigit(*str)) {
-        str++;
+    const char *end = str + strlen(str) - 1;
+    while (end > str && isdigit(*end)) {
+        end--;
     }
-    return atoi(str);
+
+    int r = atoi(end);
+    return r;
 }
 
 // accepts a command and returns its type
@@ -107,16 +110,48 @@ char get_operation(struct hash_table *table, const char *arg1) {
     return *result->value;
 }
 
-// return the input file name without extension, it allocates heap memory
+// return the program name without extension, it allocates heap memory
 char *get_program_name(char *str) {
     char *extension = strrchr(str, '.');
+
+    size_t length;
+
     if (extension == NULL) {
-        exit(EXIT_FAILURE);
+        length = strlen(str);
+    } else {
+        length = extension - str;
     }
 
-    size_t length = extension - str;
     char *new_str = malloc(sizeof(char) * PROGRAM_NAME_SIZE);
     memcpy(new_str, str, length);
     new_str[length] = '\0';
+    return new_str;
+}
+
+// return the file name without extension or full path
+char *get_file_name(char const *str) {
+    size_t length = strlen(str);
+
+    size_t index = length;
+    int count = 1;
+
+    while (index != 0) {
+        if (str[index] == '/') {
+            index++;
+            break;
+        }
+        index--;
+        count++;
+    }
+
+    char *new_str = malloc(sizeof(char) * count);
+    strcpy(new_str, str + index);
+
+    char *extension = strrchr(new_str, '.');
+    if (extension == NULL) {
+        exit(EXIT_FAILURE);
+    }
+    *extension = '\0';
+
     return new_str;
 }

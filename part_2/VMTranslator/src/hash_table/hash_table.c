@@ -18,8 +18,8 @@ struct hash_table *hash_table_init() {
     return table;
 }
 
-int hash_function(const char *key) {
-    int hash = 5381;
+long hash_function(const char *key) {
+    long hash = 5381;
     int c;
 
     while ((c = (int)*key++)) {
@@ -46,7 +46,7 @@ void hash_table_chain(struct hash_table *elem, char *key, char *value,
 
 void hash_table_insert(struct hash_table *table, char *key, char *value,
                        enum command_type command) {
-    int index = hash_function(key);
+    long index = hash_function(key);
 
     if (table[index].next != NULL) {
         hash_table_chain(table, key, value, command);
@@ -78,7 +78,7 @@ void hash_table_free(struct hash_table *table) {
 
 struct hash_table *hash_table_search(struct hash_table *table,
                                      const char *key) {
-    int index = hash_function(key);
+    long index = hash_function(key);
     struct hash_table *elem = &table[index];
 
     while (elem != NULL) {
@@ -105,11 +105,18 @@ struct hash_table *hash_table_command_set_init() {
     hash_table_insert(table, "not", "!", C_ARITHMETIC);
     hash_table_insert(table, "and", "&", C_ARITHMETIC);
     hash_table_insert(table, "or", "|", C_ARITHMETIC);
+    hash_table_insert(table, "function", NULL, C_FUNCTION);
+    hash_table_insert(table, "label", NULL, C_LABEL);
+    hash_table_insert(table, "if-goto", NULL, C_IF);
+    hash_table_insert(table, "goto", NULL, C_GOTO);
+    hash_table_insert(table, "call", NULL, C_CALL);
+    hash_table_insert(table, "return", NULL, C_RETURN);
 
     hash_table_insert(table, "local", "LCL", C_NULL);
     hash_table_insert(table, "argument", "ARG", C_NULL);
     hash_table_insert(table, "this", "THIS", C_NULL);
     hash_table_insert(table, "that", "THAT", C_NULL);
+    hash_table_insert(table, "pointer", "P", C_NULL);
     hash_table_insert(table, "temp", "t", C_NULL);
     hash_table_insert(table, "constant", "C", C_NULL);
     hash_table_insert(table, "static", "S", C_NULL);

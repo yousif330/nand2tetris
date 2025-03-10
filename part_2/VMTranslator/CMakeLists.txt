@@ -10,4 +10,6 @@ add_executable(VMTranslator main.c
         src/hash_table/hash_table.c
         src/hash_table/hash_table.h
         src/code_writer/code_writer.c
-        src/code_writer/code_writer.h)
+        src/code_writer/code_writer.h
+        src/process_file.c
+        src/process_file.h)

@@ -13,4 +13,7 @@ struct hash_table *hash_table_search(struct hash_table *table, const char *key);
 
 void hash_table_free(struct hash_table *table);
 
-#endif //HASH_TABLE_H
+void hash_table_insert(struct hash_table *table, char *key, char *value,
+                       enum command_type command);
+
+#endif  // HASH_TABLE_H

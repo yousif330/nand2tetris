@@ -5,6 +5,8 @@
 #ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
+#include <stdio.h>
+
 enum command_type {
     C_NULL = 0,
     C_ARITHMETIC,
@@ -25,5 +27,10 @@ struct hash_table {
     enum command_type type;
 };
 
+struct file_context {
+    FILE *in;
+    char *file_name;
+    char *buffer;
+};
 
-#endif //DATA_TYPES_H
+#endif  // DATA_TYPES_H
